@@ -22,8 +22,7 @@ interface CartItemsAmount {
 }
 
 const Home = (): JSX.Element => {
-  const [productList, setProductList] = useState<Product[]>([]);
-  // const [products, setProducts] = useState<ProductFormatted[]>([]);
+  const [products, setProducts] = useState<ProductFormatted[]>([]);
   // const { addProduct, cart } = useCart();
 
   // const cartItemsAmount = cart.reduce((sumAmount, product) => {
@@ -33,8 +32,12 @@ const Home = (): JSX.Element => {
   useEffect(() => {
     async function loadProducts() {
       const { data } = await api.get('/products')
-      const products: Product[] = data
-      setProductList(products)  
+      const products: ProductFormatted[] = data.map((product: Product) =>{
+        const priceFormatted = formatPrice(product.price)
+        const formatedProduct = {...product, priceFormatted}
+        return formatedProduct
+      })
+      setProducts(products)  
     }
 
     loadProducts();
@@ -46,11 +49,11 @@ const Home = (): JSX.Element => {
 
   return (
     <ProductList>
-      {productList.map(product=>(
+      {products.map(product=>(
         <li key={product.id}>
           <img src={product.image} alt={product.title} />
           <strong>Tênis de Caminhada Leve Confortável</strong>
-          <span>{product.price}</span>
+          <span>{product.priceFormatted}</span>
           <button
             type="button"
             data-testid="add-product-button"
