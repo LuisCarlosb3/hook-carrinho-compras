@@ -66,9 +66,16 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     amount,
   }: UpdateProductAmount) => {
     try {
-      // TODO
-    } catch {
-      // TODO
+      const updatedList = cart.map(product=> {
+        if(product.id === productId){
+          return {...product, amount}
+        }
+        return product
+      })
+      setCart(updatedList)
+      localStorage.setItem('@RocketShoes:cart', JSON.stringify(updatedList))
+    } catch (error){
+      console.log(error)
     }
   };
 
