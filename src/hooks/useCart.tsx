@@ -55,9 +55,11 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
   const removeProduct = (productId: number) => {
     try {
-      // TODO
-    } catch {
-      // TODO
+      const updatedList = cart.filter(product=> productId !== product.id)
+      setCart(updatedList)
+      localStorage.setItem('@RocketShoes:cart', JSON.stringify(updatedList))
+    } catch (error){
+      console.log(error)
     }
   };
 
